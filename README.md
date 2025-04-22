@@ -15,9 +15,9 @@ This project is a
 
 ## Running the Server
 
-## Running the CLient
+## Running the Client
 
-
+## Running the Database
 
 
 
