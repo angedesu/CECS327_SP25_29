@@ -28,6 +28,15 @@ while True:
         break
 
     # data = data.upper()
+    if data == 1:
+        # method for querying for #1
+        pass
+    elif data == 2:
+        # method for querying for #2
+        pass
+    else:
+        #method for querying for #3
+        pass
 
 
     # need functions for the queries 
