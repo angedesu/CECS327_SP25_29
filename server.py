@@ -21,7 +21,7 @@ cursor = connection.cursor()
 
 
 while True:
-    data = str(incomingSocket.recv(1024).decode())
+    data = int(incomingSocket.recv(1024).decode())
     print(f"Received: {data}")
 
     if not data:
@@ -35,10 +35,11 @@ while True:
         
     elif data == 2:
         # method for querying for #2
-        pass
+        results = 2
+
     else:
         #method for querying for #3
-        pass
+        results = 3
 
 
     # need functions for the queries 
@@ -62,7 +63,8 @@ def option_1():
             numbers.append(float(moisture))
 
     average = round(sum(numbers) / len(numbers), 2) 
-    return {f'Average moisture (%RH) in your fridge in ht elast 3 hours is: {average}'}
+    print(average)
+    return {f'Average moisture (%RH) in your fridge in the last 3 hours is: {average}'}
 
 def option_2():
     return {"You have chosen option 2"}
