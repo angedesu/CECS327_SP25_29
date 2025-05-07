@@ -1,6 +1,7 @@
 import sys
 import socket
 import psycopg2
+import numpy as np
 import json
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,21 +21,24 @@ cursor = connection.cursor()
 
 def option_1():
     # connection to database
-    cursor.execute('SELECT payload FROM "IOTdata_virtual" WHERE payload->>\'board_name\' = \'fridge_board_1\'AND "time" >= NOW() - INTERVAL \'3 hours\'')
+    cursor.execute("""SELECT payload->'DHT11 - moisture'
+                   FROM "IOTdata_virtual" 
+                   WHERE payload->>\'board_name\' = \'fridge_board_1\'
+                   AND "time" >= NOW() - INTERVAL \'3 hours\'""")
     
     rows = cursor.fetchall()
+    print(rows)
     connection.close()
 
-    numbers = []
+    moisture_data = []
     for row in rows:
-        payload = json.loads(row[0])
-        moisture = payload.get("DHT11 - moisture")
-        if moisture:
-            numbers.append(float(moisture))
+        moisture = float(row[0])
+        moisture_data.append(moisture)
+    
+    moisture_average = np.average(moisture_data)
 
-    average = round(sum(numbers) / len(numbers), 2) 
-    print(average)
-    return {f'Average moisture (%RH) in your fridge in the last 3 hours is: {average}'}
+    print(moisture_average)
+    return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average}'
 
 def option_2():
     return {"You have chosen option 2"}
