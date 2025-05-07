@@ -28,7 +28,6 @@ def option_1():
     
     rows = cursor.fetchall()
     print(rows)
-    connection.close()
 
     moisture_data = []
     for row in rows:
@@ -44,11 +43,6 @@ def option_2():
     return {"You have chosen option 2"}
 
 def option_3():
-    # connect to server first 
-    connection = psycopg2.connect( "postgresql://neondb_owner:npg_wbSvC7qAEGH3@ep-divine-meadow-a5w9f31z.us-east-2.aws.neon.tech/neondb?sslmode=require")
-    print("Connecting to database...")
-    cursor = connection.cursor()
-
     # initiate variables
     fridge01 = 0.0
     fridge02 = 0.0
@@ -91,8 +85,6 @@ def option_3():
         dishwasher += float(row[0])
         count03 += 1
     dishwasher = convert_to_kwh(count03, dishwasher)
-    
-    connection.close()
 
     # compare results, find greatest value
     list01 = [fridge01, fridge02, dishwasher]
@@ -114,12 +106,6 @@ def convert_to_kwh(count, total):
 while True:
     data = str(incomingSocket.recv(1024).decode())
     print(f"Received: {data}")
-
-    '''if not data:
-        cursor.close()
-        connection.close()
-        break'''
-
     
     if data == "1":
         print("Received option 1")
@@ -134,7 +120,9 @@ while True:
         results = option_3()
     
     else:
-        print("Wrong query option")
+        cursor.close()
+        connection.close()
+        break
 
     # need functions for the queries 
     incomingSocket.send(bytearray(str(results), encoding="utf-8"))
