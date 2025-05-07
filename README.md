@@ -10,7 +10,9 @@ Huy Vu
 This project is a
 
 ## Requirements 
-
+socket
+psycopg2
+numpy
 ## How to Run 
 
 ## Running the Server

@@ -2,7 +2,6 @@ import sys
 import socket
 import psycopg2
 import numpy as np
-import json
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.bind(("127.0.0.1", 1234))
