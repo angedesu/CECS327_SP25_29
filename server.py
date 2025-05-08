@@ -87,7 +87,6 @@ def option_2():
     # Calculate average of those averages
     avg_per_cycle = np.average(per_cycle_average)
     
-    
     return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f}"
 
 
@@ -148,6 +147,8 @@ def option_3():
     return f"{devices[index]} had the highest energy consumption: {maxNum} kWh"
 
 def convert_to_kwh(count, total):
+    if count == 0:
+        return 0.0
     average = total / count
     kwh_reading = round((120 * average * (count / 60)) / 1000, 1)
     return kwh_reading
