@@ -35,7 +35,6 @@ Running through CLI: python client.py
 Enter the server's IP address and port.
 If the connection was accepted, the prompt will appear.
 
-## Running the Database
 
 
 
