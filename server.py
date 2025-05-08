@@ -87,7 +87,10 @@ def option_2():
     # Calculate average of those averages
     avg_per_cycle = np.average(per_cycle_average)
     
-    return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f} G"
+    # Conver from litres to gallons
+    avg_to_gallons = avg_per_cycle * 0.264172
+    
+    return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f} gallons"
 
 
 def option_3():
