@@ -2,6 +2,7 @@ import sys
 import socket
 import psycopg2
 import numpy as np
+import datetime
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.bind(("127.0.0.1", 1234))
@@ -25,34 +26,70 @@ def option_1():
                    WHERE payload->>\'board_name\' = \'fridge_board_1\'
                    AND "time" >= NOW() - INTERVAL \'3 hours\'""")
     
-    rows = cursor.fetchall()
-    # print(rows)
+    results = cursor.fetchall()
+    
 
     moisture_data = []
-    for row in rows:
+    for row in results:
         moisture = float(row[0])
         moisture_data.append(moisture)
     
     moisture_average = np.average(moisture_data)
 
     print(moisture_average)
-    return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average}'
+    return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average:.2f}'
 
 def option_2():
-    # initiate variables
-    dishwasher = 0
-    count01 = 0
-    cursor.execute("SELECT payload->'Capacitive Liquid Level Sensor - WaterConsumption' " \
-                    "FROM \"IOTdata_virtual\" " \
-                    "WHERE payload->>'board_name'='dishwasher_board' " \
-                    "AND \"time\" >= NOW() - INTERVAL '2 hours'")
-    dishwasherRows = cursor.fetchall()
-    for row in dishwasherRows:
-        dishwasher += float(row[0])
-        count += 1
+    # Query dishwasher water consumption data
+    cursor.execute("""SELECT "time", payload->'Capacitive Liquid Level Sensor - WaterConsumption'
+                      FROM "IOTdata_virtual"
+                      WHERE payload->>'board_name' = 'dishwasher_board'
+                      ORDER BY "time" ASC""")
+    
+    results = cursor.fetchall()
+    print(len(results))
 
-    average = dishwasher / count01
-    return f"The average water consumption for your dishwasher for the past 2 hours was: {average}"
+    # Process the query result into 2-hour cycles
+    cycles = {} # Dictionary to hold the cycles data
+    
+    first_timestamp = results[0][0]
+    last_timestamp = results[-1][0]
+
+    print("First timestamp:", first_timestamp)
+    print("Last timestamp:", last_timestamp)
+    print("Duration (hours):", (last_timestamp - first_timestamp).total_seconds() / 3600)
+
+    for timestamp, water_consumption in results:
+        time_difference = last_timestamp - timestamp
+        hours_back = int(time_difference.total_seconds() // 3600) 
+        cycle_index = hours_back // 3
+
+        # Define the start/end time for this cycle
+        cycle_end = last_timestamp - datetime.timedelta(hours=cycle_index * 3)
+        cycle_start = cycle_end - datetime.timedelta(hours=2) # There will be a 1 hour gap between each cycle
+
+        key = (cycle_start, cycle_end)
+
+        # Add the cycle to dictionary if it doesn't exist
+        if key not in cycles:
+            cycles[key] = []
+        
+        cycles[key].append(float(water_consumption))
+    
+    print(len(cycles))
+    
+    # Calculate average water consumption for each cycle
+    per_cycle_average = []
+    for values in cycles.values():
+        avg = np.average(values)
+        per_cycle_average.append(avg)
+    
+    # Calculate average of those averages
+    avg_per_cycle = np.average(per_cycle_average)
+    
+    
+    return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f}"
+
 
 def option_3():
     # initiate variables
