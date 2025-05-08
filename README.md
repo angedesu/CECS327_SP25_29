@@ -3,8 +3,8 @@ CECS 327 Sec 01
 Assignment 8 
 
 ## Authors
-Angela Pastor 
-Huy Vu
+- Angela Pastor 
+- Huy Vu
 
 ## Description 
 This project is an end to end IoT system, utilizing virtual devices in Dataniz, which will store their data in NeonDB tables.
@@ -23,13 +23,18 @@ Libraries used:
 - import datetime
 
 ## How to Run 
+1. Open the terminal
+2. Navigate to the directory containing the python source code
+
 ## Running the Server
 If needed, change the IP address and Port you want to use for the server.
 Running through CLI: python server.py
+
 ## Running the Client
 Running through CLI: python client.py
 Enter the server's IP address and port.
 If the connection was accepted, the prompt will appear.
+
 ## Running the Database
 
 
