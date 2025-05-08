@@ -37,7 +37,7 @@ def option_1():
     moisture_average = np.average(moisture_data)
 
     print(moisture_average)
-    return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average:.2f}'
+    return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average:.2f} %RH'
 
 def option_2():
     # Query dishwasher water consumption data
@@ -87,7 +87,7 @@ def option_2():
     # Calculate average of those averages
     avg_per_cycle = np.average(per_cycle_average)
     
-    return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f}"
+    return f"Average water consumption per cycle in your dishwasher: {avg_per_cycle:.2f} G"
 
 
 def option_3():
