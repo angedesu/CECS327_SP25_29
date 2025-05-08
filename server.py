@@ -19,14 +19,14 @@ print("Connecting to database...")
 cursor = connection.cursor()
 
 def option_1():
-    # connection to database
+    # query 
     cursor.execute("""SELECT payload->'DHT11 - moisture'
                    FROM "IOTdata_virtual" 
                    WHERE payload->>\'board_name\' = \'fridge_board_1\'
                    AND "time" >= NOW() - INTERVAL \'3 hours\'""")
     
     rows = cursor.fetchall()
-    print(rows)
+    # print(rows)
 
     moisture_data = []
     for row in rows:
@@ -39,7 +39,20 @@ def option_1():
     return f'Average moisture (%RH) in your fridge in the last 3 hours is: {moisture_average}'
 
 def option_2():
-    return {"You have chosen option 2"}
+    # initiate variables
+    dishwasher = 0
+    count01 = 0
+    cursor.execute("SELECT payload->'Capacitive Liquid Level Sensor - WaterConsumption' " \
+                    "FROM \"IOTdata_virtual\" " \
+                    "WHERE payload->>'board_name'='dishwasher_board' " \
+                    "AND \"time\" >= NOW() - INTERVAL '2 hours'")
+    dishwasherRows = cursor.fetchall()
+    for row in dishwasherRows:
+        dishwasher += float(row[0])
+        count += 1
+
+    average = dishwasher / count01
+    return f"The average water consumption for your dishwasher for the past 2 hours was: {average}"
 
 def option_3():
     # initiate variables
@@ -50,7 +63,7 @@ def option_3():
     count02 = 0
     count03 = 0
 
-    # query for fridge 01
+    # query for fridge01
     cursor.execute(" SELECT payload->'ACS712 - Ammeter' " \
                     "FROM \"IOTdata_virtual\" " \
                     "WHERE payload->>'board_name' = 'fridge_board_1' " \
@@ -107,13 +120,10 @@ while True:
     print(f"Received: {data}")
     
     if data == "1":
-        print("Received option 1")
         results = option_1()
         
     elif data == "2":
-        print("Received option 2")
-        # method for querying for #2
-        results = 2
+        results = option_2()
 
     elif data == "3":
         results = option_3()

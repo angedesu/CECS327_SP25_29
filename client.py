@@ -21,7 +21,10 @@ while True:
                         "4. Exit\n"))
     
     # Process user query
-    if user_query not in ["1", "2", "3", "4"]:
+    if user_query == "4":
+        print("See you next time!")
+        break
+    if user_query not in ["1", "2", "3"]:
         print("Sorry, this query cannot be processed. Please try inputing 1, 2, or 3.")
     else:
         # Send query selection to server
