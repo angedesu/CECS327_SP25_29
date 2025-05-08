@@ -19,8 +19,8 @@ The server will query the database, as well as calculating data based on the cli
   1. pip install numpy
 - 
 Libraries used:
-- import socket
-- import datetime
+- socket
+- datetime
 
 ## How to Run 
 1. Open the terminal
