@@ -115,9 +115,9 @@ def option_3():
     fridge01 = convert_to_kwh(count01, fridge01)
 
     # query for fridge02
-    cursor.execute("SELECT payload->'sensor 3 ce68cdd6-7ec8-4aa5-9801-b67484bbac62' " \
+    cursor.execute("SELECT payload->'sensor 3 d398b907-8995-4429-b538-b3fb26a304a2' " \
                     "FROM \"IOTdata_virtual\" " \
-                    "WHERE payload->>'board_name' = 'board 1 ce68cdd6-7ec8-4aa5-9801-b67484bbac62' " \
+                    "WHERE payload->>'board_name' = 'board 1 d398b907-8995-4429-b538-b3fb26a304a2' " \
                     "AND \"time\" >= NOW() - INTERVAL '3 hours'")
     
     fridge02rows = cursor.fetchall()
